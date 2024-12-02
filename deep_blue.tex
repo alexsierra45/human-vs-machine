@@ -1,0 +1,94 @@
+
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Deep Blue: Innovación y Tecnología en la Ciencia de la Computación}
+\author{[Tu nombre completo y grupo]}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Este trabajo aborda en profundidad los componentes técnicos y operativos de Deep Blue, la supercomputadora de IBM que marcó un antes y un después en la inteligencia artificial al derrotar al campeón mundial de ajedrez Garry Kasparov en 1997. El documento se estructura en torno a su arquitectura hardware, los algoritmos que definieron su desempeño y el impacto trascendental en la ciencia de la computación. Además, se exploran aspectos biográficos de los desarrolladores clave y cómo sus contribuciones específicas permitieron alcanzar este hito. El trabajo incluye análisis detallados, ejemplos, gráficos y referencias técnicas para ofrecer una comprensión integral del tema.
+\end{abstract}
+
+\section*{Palabras clave}
+Deep Blue, supercomputación, inteligencia artificial, ajedrez, computación de alto rendimiento.
+
+\section{Introducción}
+En 1997, la supercomputadora Deep Blue sorprendió al mundo al derrotar al entonces campeón mundial de ajedrez, Garry Kasparov, en un evento que simbolizó el avance tecnológico en inteligencia artificial y supercomputación. Deep Blue no solo fue una máquina diseñada para jugar ajedrez, sino un ejemplo paradigmático de cómo integrar hardware especializado y algoritmos avanzados para resolver problemas complejos. 
+
+A lo largo de este documento, se explorará cómo Deep Blue logró un rendimiento sin precedentes al analizar hasta 200 millones de posiciones por segundo, una capacidad que superaba con creces cualquier esfuerzo computacional previo en ajedrez. El trabajo examina sus componentes hardware, el diseño del software y los algoritmos que le permitieron tomar decisiones estratégicas comparables a las de un gran maestro humano. También se discutirá el impacto histórico y técnico de este logro, que sentó las bases para desarrollos futuros en inteligencia artificial.
+
+\section{Aspectos Biográficos Relevantes}
+El éxito de Deep Blue no habría sido posible sin las contribuciones de un equipo multidisciplinario de expertos. A continuación, se detalla el rol de dos figuras clave:
+
+\subsection*{Feng-hsiung Hsu}
+Nacido en Taiwán en 1959, Feng-hsiung Hsu fue el principal arquitecto de Deep Blue. Con formación en ingeniería eléctrica, Hsu emigró a Estados Unidos para realizar su doctorado en la Universidad Carnegie Mellon. Allí desarrolló Deep Thought, el precursor de Deep Blue. Su experiencia en diseño de chips VLSI fue fundamental para optimizar el rendimiento de la máquina. En IBM, Hsu lideró la implementación de hardware personalizado que permitía analizar millones de posiciones por segundo, revolucionando el enfoque tradicional de los sistemas de ajedrez.
+
+\subsection*{Murray Campbell y el equipo de IBM}
+Murray Campbell, un científico especializado en inteligencia artificial, fue otro miembro destacado del equipo. Su enfoque se centró en el diseño de estrategias y en la integración de las capacidades del hardware con algoritmos optimizados. El equipo multidisciplinario incluyó ingenieros, expertos en ajedrez y científicos computacionales, cuya colaboración permitió superar los desafíos técnicos y estratégicos.
+
+\section{Componentes Técnicos de Deep Blue}
+
+\subsection{Arquitectura Hardware}
+Deep Blue fue diseñado como un sistema altamente especializado para ajedrez, lo que le permitió obtener un rendimiento incomparable en su época. Los componentes principales incluyen:
+
+\subsubsection*{Procesadores de propósito general}
+Deep Blue utilizó nodos IBM RS/6000, una arquitectura de alto rendimiento basada en RISC (Reduced Instruction Set Computing). Estos procesadores manejaban tareas generales, incluyendo la coordinación de los cálculos paralelos realizados por los chips especializados.
+
+\subsubsection*{Chips VLSI personalizados}
+El corazón del rendimiento de Deep Blue residía en sus chips VLSI (Very Large Scale Integration), diseñados específicamente para realizar cálculos relacionados con el ajedrez. Cada chip podía analizar hasta 2 millones de posiciones por segundo, lo que permitía a la máquina realizar una búsqueda exhaustiva en el árbol de posibilidades del juego.
+
+\subsubsection*{Sistema paralelo masivo}
+El sistema estaba compuesto por 30 nodos de procesamiento, cada uno equipado con 480 chips personalizados. Esta configuración permitía analizar movimientos de manera simultánea y eficiente. La arquitectura paralela fue clave para alcanzar la capacidad de 200 millones de posiciones por segundo.
+
+\subsection{Software y Algoritmos}
+El software de Deep Blue era igualmente avanzado y estaba diseñado para maximizar el uso del hardware especializado:
+
+\subsubsection*{Algoritmo de búsqueda Alpha-Beta}
+El algoritmo Alpha-Beta es una optimización de la búsqueda minimax que permite reducir drásticamente el número de nodos evaluados. En Deep Blue, se implementó una versión mejorada que priorizaba las ramas más prometedoras, logrando decisiones rápidas y precisas.
+
+\subsubsection*{Función de evaluación heurística}
+La función de evaluación de Deep Blue consideraba múltiples factores, incluyendo:
+\begin{itemize}
+    \item \textbf{Control del tablero:} Evaluaba la influencia de las piezas sobre áreas clave.
+    \item \textbf{Ventaja material:} Calculaba el equilibrio de fuerzas en términos de puntos de piezas.
+    \item \textbf{Estrategias tácticas:} Identificaba patrones como sacrificios y jaques.
+\end{itemize}
+
+\subsubsection*{Base de datos de aperturas y finales}
+La base de datos de Deep Blue incluía millones de posiciones precomputadas, lo que le proporcionaba una ventaja inicial significativa en las partidas y un conocimiento profundo en finales complejos.
+
+\section{Impacto en la Ciencia de la Computación}
+El éxito de Deep Blue no solo fue un triunfo técnico, sino que también marcó un cambio de paradigma en la inteligencia artificial y la supercomputación:
+
+\subsubsection*{Supercomputación aplicada}
+Deep Blue demostró cómo los sistemas paralelos masivos pueden resolver problemas altamente complejos en tiempos razonables. Este enfoque se ha aplicado desde entonces en áreas como modelado climático y simulaciones médicas.
+
+\subsubsection*{Avances en inteligencia artificial}
+Aunque Deep Blue no utilizaba aprendizaje automático, inspiró investigaciones en aprendizaje supervisado y redes neuronales, marcando el inicio de una nueva era en inteligencia artificial.
+
+\subsubsection*{Legado técnico y cultural}
+El enfrentamiento entre Deep Blue y Kasparov simbolizó la creciente capacidad de las máquinas para igualar e incluso superar habilidades humanas específicas. Esto planteó preguntas éticas y filosóficas sobre el papel de la inteligencia artificial en la sociedad.
+
+\section{Conclusión}
+Deep Blue fue más que una máquina de ajedrez; representó un avance técnico y conceptual que redefinió los límites de la computación. Su éxito fue el resultado de la integración precisa de hardware especializado, software optimizado y el conocimiento de expertos humanos. Este logro sigue siendo un punto de referencia en el desarrollo de tecnologías avanzadas.
+
+\section*{Bibliografía}
+\begin{itemize}
+    \item Hsu, Feng-hsiung. \textit{Behind Deep Blue: Building the Computer that Defeated the World Chess Champion.} Princeton University Press, 2002.
+    \item Campbell, Murray, Hoane, Joseph. \textit{Deep Blue.} Artificial Intelligence, 134(1-2), 57--83, Elsevier, 1999.
+    \item Newborn, Monty. \textit{Kasparov versus Deep Blue: Computer Chess Comes of Age.} Springer, 2002.
+\end{itemize}
+
+\end{document}
