@@ -10,7 +10,7 @@
 \geometry{margin=1in}
 
 \title{Deep Blue: Hombre vs Máquina}
-\author{Juan Carlos Espinosa Delgado, Alex Sierra Alcalá}
+\author{Juan Carlos Espinosa Delgado, Alex Sierra Alcalá \\ MATCOM, Universidad de La Habana}
 \date{\today}
 
 \begin{document}
@@ -18,14 +18,14 @@
 \maketitle
 
 \begin{abstract}
-Este trabajo aborda en profundidad los componentes técnicos y operativos de Deep Blue, la supercomputadora de IBM que marcó un antes y un después en la inteligencia artificial al derrotar al campeón mundial de ajedrez Garry Kasparov en 1997. El documento se estructura en torno a su arquitectura hardware, los algoritmos que definieron su desempeño y el impacto trascendental en la ciencia de la computación. Además, se exploran aspectos biográficos de los desarrolladores clave y cómo sus contribuciones específicas permitieron alcanzar este hito. El trabajo incluye análisis detallados, ejemplos, gráficos y referencias técnicas para ofrecer una comprensión integral del tema.
+Este trabajo aborda en profundidad los componentes técnicos y operativos de Deep Blue, la supercomputadora de IBM que marcó un antes y un después en la inteligencia artificial al derrotar al campeón mundial de ajedrez Gary Kasparov en 1997. El documento se estructura en torno a su arquitectura hardware, los algoritmos que definieron su desempeño y el impacto trascendental en la ciencia de la computación. Además, se exploran aspectos biográficos de los desarrolladores clave y cómo sus contribuciones específicas permitieron alcanzar este hito. El trabajo incluye análisis detallados, ejemplos, gráficos y referencias técnicas para ofrecer una comprensión integral del tema.
 \end{abstract}
 
 \section*{Palabras clave}
 Deep Blue, supercomputación, inteligencia artificial, ajedrez, computación de alto rendimiento.
 
 \section{Introducción}
-En 1997, la supercomputadora Deep Blue sorprendió al mundo al derrotar al entonces campeón mundial de ajedrez, Garry Kasparov, en un evento que simbolizó el avance tecnológico en inteligencia artificial y supercomputación. Deep Blue no solo fue una máquina diseñada para jugar ajedrez, sino un ejemplo paradigmático de cómo integrar hardware especializado y algoritmos avanzados para resolver problemas complejos. 
+En 1997, la supercomputadora Deep Blue sorprendió al mundo al derrotar al entonces campeón mundial de ajedrez, Gary Kasparov, en un evento que simbolizó el avance tecnológico en inteligencia artificial y supercomputación. Deep Blue no solo fue una máquina diseñada para jugar ajedrez, sino un ejemplo paradigmático de cómo integrar hardware especializado y algoritmos avanzados para resolver problemas complejos. 
 
 A lo largo de este documento, se explorará cómo Deep Blue logró un rendimiento sin precedentes al analizar hasta 200 millones de posiciones por segundo, una capacidad que superaba con creces cualquier esfuerzo computacional previo en ajedrez. El trabajo examina sus componentes hardware, el diseño del software y los algoritmos que le permitieron tomar decisiones estratégicas comparables a las de un gran maestro humano. También se discutirá el impacto histórico y técnico de este logro, que sentó las bases para desarrollos futuros en inteligencia artificial.
 
@@ -130,16 +130,40 @@ La función de evaluación de Deep Blue consideraba múltiples factores, incluye
 La base de datos de Deep Blue incluía millones de posiciones precomputadas, lo que le proporcionaba una ventaja inicial significativa en las partidas y un conocimiento profundo en finales complejos.
 
 \section{Impacto en la Ciencia de la Computación}
-El éxito de Deep Blue no solo fue un triunfo técnico, sino que también marcó un cambio de paradigma en la inteligencia artificial y la supercomputación:
 
-\subsubsection*{Supercomputación aplicada}
-Deep Blue demostró cómo los sistemas paralelos masivos pueden resolver problemas altamente complejos en tiempos razonables. Este enfoque se ha aplicado desde entonces en áreas como modelado climático y simulaciones médicas.
+El éxito de Deep Blue en 1997 representó más que una victoria en el ámbito del ajedrez; fue un avance paradigmático que redefinió los límites de la computación, mostrando el potencial de los sistemas especializados para resolver problemas complejos. Este impacto puede analizarse desde múltiples perspectivas: técnica, cultural y científica.
 
-\subsubsection*{Avances en inteligencia artificial}
-Aunque Deep Blue no utilizaba aprendizaje automático, inspiró investigaciones en aprendizaje supervisado y redes neuronales, marcando el inicio de una nueva era en inteligencia artificial.
+\subsection{Supercomputación Aplicada}
 
-\subsubsection*{Legado técnico y cultural}
-El enfrentamiento entre Deep Blue y Kasparov simbolizó la creciente capacidad de las máquinas para igualar e incluso superar habilidades humanas específicas. Esto planteó preguntas éticas y filosóficas sobre el papel de la inteligencia artificial en la sociedad.
+Deep Blue fue un ejemplo pionero de cómo los sistemas paralelos masivos pueden abordar problemas computacionalmente intensivos. Con una arquitectura de nodos IBM RS/6000 SP y procesadores personalizados, demostró la capacidad de analizar 200 millones de posiciones por segundo, algo inimaginable hasta entonces. Este enfoque influyó directamente en áreas como:
+
+\begin{itemize}
+    \item \textbf{Modelado Climático:} Las simulaciones climáticas modernas, como las realizadas por el \textit{European Network for Earth System Modeling (ENES)}, utilizan arquitecturas paralelas similares para modelar fenómenos complejos con alta resolución temporal y espacial \cite{andre2014high}.
+    \item \textbf{Simulaciones Médicas:} La simulación de plegamiento de proteínas, como se observa en proyectos como \textit{Folding@Home}, se basa en arquitecturas paralelas inspiradas por los principios de diseño de máquinas como Deep Blue \cite{larson2009folding}.
+\end{itemize}
+
+Además, Deep Blue confirmó que el incremento del rendimiento a través de hardware especializado es una solución efectiva para problemas específicos, un enfoque que sigue vigente en la computación de alto rendimiento (HPC).
+
+\subsection{Avances en Inteligencia Artificial}
+
+Aunque Deep Blue no utilizaba aprendizaje automático, marcó un hito en el desarrollo de sistemas inteligentes al demostrar la efectividad de técnicas como la búsqueda Alpha-Beta y funciones de evaluación heurísticas. Este logro inspiró nuevas líneas de investigación, entre ellas:
+
+\begin{itemize}
+    \item \textbf{Aprendizaje Supervisado y Redes Neuronales:} Deep Blue allanó el camino para el desarrollo de modelos más avanzados, como AlphaZero, que combina aprendizaje por refuerzo y redes neuronales profundas para superar a jugadores humanos en juegos de tablero \cite{silver2018general}.
+    \item \textbf{Procesamiento de Lenguaje Natural (PLN):} La capacidad de procesar grandes volúmenes de datos en tiempo real, como hizo Deep Blue, ha influido en aplicaciones modernas de PLN, como modelos Transformers tipo GPT-3 \cite{brown2020language}.
+    \item \textbf{Robótica Inteligente:} La toma de decisiones estratégicas en tiempo real, característica de Deep Blue, ha sido adaptada a sistemas robóticos autónomos para navegación y planificación \cite{kober2013reinforcement}.
+\end{itemize}
+
+\subsection{Legado Técnico y Cultural}
+
+El enfrentamiento entre Deep Blue y Kasparov no solo marcó un antes y un después en la inteligencia artificial, sino que también tuvo un impacto cultural significativo. Este evento, ampliamente cubierto por los medios, despertó debates sobre el futuro de las máquinas y su lugar en la sociedad:
+
+\begin{itemize}
+    \item \textbf{Debates Éticos y Filosóficos:} El éxito de Deep Blue planteó preguntas fundamentales sobre el papel de la inteligencia artificial en tareas humanas avanzadas. Investigaciones como las de Bostrom \cite{bostrom2014superintelligence} han explorado cómo la IA puede influir en la economía, la ética y la identidad humana.
+    \item \textbf{Representación Mediática:} La victoria de Deep Blue se convirtió en un símbolo del poder tecnológico, pero también en una fuente de inquietud, reflejada en obras de ciencia ficción y debates públicos.
+    \item \textbf{Inspiración para Nuevas Generaciones:} Al igual que el programa Apollo en la exploración espacial, Deep Blue inspiró a una generación de científicos y programadores a explorar los límites de la computación y la inteligencia artificial.
+\end{itemize}
+
 
 \section{Conclusión}
 Deep Blue fue más que una máquina de ajedrez; representó un avance técnico y conceptual que redefinió los límites de la computación. Su éxito fue el resultado de la integración precisa de hardware especializado, software optimizado y el conocimiento de expertos humanos. Este logro sigue siendo un punto de referencia en el desarrollo de tecnologías avanzadas.
