@@ -113,35 +113,189 @@ Deep Thought 2 logró victorias importantes, como los campeonatos de ajedrez inf
 
 \section{Componentes Técnicos de Deep Blue}
 
-\subsection{Arquitectura Hardware}
-Deep Blue fue diseñado como un sistema altamente especializado para ajedrez, lo que le permitió obtener un rendimiento incomparable en su época. Los componentes principales incluyen:
+\subsection{Arquitectura y Hardware}
+Deep Blue fue diseñado como un sistema masivamente paralelo, optimizado específicamente para realizar búsquedas en el árbol de juego de ajedrez. Su arquitectura combinaba procesadores de propósito general con hardware especializado, logrando un rendimiento sin precedentes en su época.
 
 \subsubsection*{Procesadores de propósito general}
-Deep Blue utilizó nodos IBM RS/6000, una arquitectura de alto rendimiento basada en RISC (Reduced Instruction Set Computing). Estos procesadores manejaban tareas generales, incluyendo la coordinación de los cálculos paralelos realizados por los chips especializados.
+El sistema estaba compuesto por 30 nodos IBM RS/6000 SP, equipados con procesadores \textit{P2SC (Power2 Super Chip)}. Estos procesadores, basados en la arquitectura RISC (\textit{Reduced Instruction Set Computing}), gestionaban tareas generales y coordinaban los cálculos realizados por los chips especializados. De los 30 nodos, 28 operaban a \textbf{120 MHz}, mientras que los 2 restantes funcionaban a \textbf{135 MHz}. Cada nodo contaba con \textbf{1 GB de RAM} y \textbf{4 GB de almacenamiento en disco}, y todos estaban conectados mediante un \textit{switch} de alta velocidad, lo que garantizaba una comunicación eficiente y minimizaba la latencia.
 
 \subsubsection*{Chips VLSI personalizados}
-El corazón del rendimiento de Deep Blue residía en sus chips VLSI (Very Large Scale Integration), diseñados específicamente para realizar cálculos relacionados con el ajedrez. Cada chip podía analizar hasta 2 millones de posiciones por segundo, lo que permitía a la máquina realizar una búsqueda exhaustiva en el árbol de posibilidades del juego.
+El corazón del rendimiento de Deep Blue residía en sus \textbf{480 chips VLSI (Very Large Scale Integration)}, distribuidos en los nodos de procesamiento, con 16 chips por nodo. Estos chips, diseñados específicamente para tareas relacionadas con el ajedrez, eran capaces de analizar entre \textbf{2 y 2.5 millones de posiciones por segundo}. Entre sus funcionalidades avanzadas destacaban las extensiones de búsqueda para jugadas tácticas críticas, como jaques y capturas, y la detección de repeticiones en el tablero. Los chips se conectaban al nodo anfitrión a través de un bus \textit{microchannel}, lo que permitía una integración fluida con el sistema.
 
 \subsubsection*{Sistema paralelo masivo}
-El sistema estaba compuesto por 30 nodos de procesamiento, cada uno equipado con 480 chips personalizados. Esta configuración permitía analizar movimientos de manera simultánea y eficiente. La arquitectura paralela fue clave para alcanzar la capacidad de 200 millones de posiciones por segundo.
+La arquitectura de Deep Blue seguía un diseño jerárquico de tres capas. Un nodo principal, denominado \textit{maestro}, se encargaba de explorar las ramas superiores del árbol de juego y delegaba las posiciones derivadas a los demás nodos, conocidos como \textit{trabajadores}. Estos trabajadores analizaban las posiciones intermedias y delegaban las hojas del árbol a los chips especializados, que realizaban búsquedas exhaustivas en los niveles finales. Esta configuración masivamente paralela permitió a Deep Blue alcanzar velocidades promedio de \textbf{200 millones de posiciones por segundo} en posiciones tranquilas, con picos de hasta \textbf{330 millones} en situaciones tácticas complejas. Durante el enfrentamiento con Kasparov en 1997, el sistema mantuvo una velocidad promedio de \textbf{126 millones de posiciones por segundo} en búsquedas de más de un minuto.
+
+En conjunto, la combinación de procesadores de propósito general, chips especializados y una arquitectura paralela eficiente permitió a Deep Blue superar las limitaciones de los sistemas tradicionales y establecer un nuevo estándar en computación para juegos estratégicos.
+
+\subsection{El chip de ajedrez}
+
+El chip de ajedrez de Deep Blue fue un componente clave que permitió a la máquina realizar análisis rápidos y precisos en el juego. Su diseño modular se dividía en tres partes principales: el generador de movimientos, la función de evaluación y el control de búsqueda. Cada uno de estos componentes estaba optimizado para manejar tareas específicas del ajedrez, logrando un rendimiento sobresaliente.
+
+\subsubsection*{Generación de movimientos}
+El generador de movimientos del chip estaba basado en una matriz de lógica combinatoria de \textbf{8 × 8}, que simulaba un tablero de ajedrez en hardware. Este diseño permitía computar todos los movimientos posibles simultáneamente, seleccionando uno en cada ciclo mediante una red de arbitraje. Aunque solo generaba un movimiento a la vez, el generador garantizaba un tiempo de latencia mínimo. 
+
+El orden en que se generaban los movimientos era fundamental para optimizar la búsqueda en el árbol de decisiones. Primero se evaluaban las capturas, priorizando aquellas en las que piezas de menor valor capturaban piezas de mayor valor. Luego se consideraban los movimientos no capturadores, ordenados por su importancia estratégica, como el control del centro del tablero. Después de evaluar cada movimiento, el chip podía descartarlo y generar el siguiente en la secuencia.
+
+Además, el generador incluía funciones avanzadas para mejorar la búsqueda, como la generación de movimientos que evaden jaques y extensiones de búsqueda específicas, como las extensiones singulares, que priorizaban jugadas críticas en escenarios tácticos complejos.
+
+\subsubsection*{Función de evaluación}
+La función de evaluación en el chip era responsable de asignar valores numéricos a las posiciones del juego, permitiendo que el sistema determinara cuál era más ventajosa. Esta función se dividía en dos niveles:
+\begin{itemize}
+    \item \textbf{Evaluación rápida:} Calculaba puntajes básicos en un solo ciclo de reloj, incluyendo el valor de las piezas ajustado según su posición en el tablero y características sencillas como la posibilidad de avanzar un peón. Este nivel estaba diseñado para análisis rápidos durante búsquedas preliminares.
+    \item \textbf{Evaluación lenta:} Analizaba el tablero en mayor detalle, calculando términos complejos como la estructura de peones, la seguridad del rey, el control de casillas y configuraciones estratégicas como torres en la séptima fila o piezas bloqueadas. Los valores relativos de estos factores eran programables, permitiendo ajustar la importancia de cada uno según la situación.
+\end{itemize}
+
+Este diseño balanceaba velocidad y precisión, asegurando que las decisiones del sistema fueran tácticamente sólidas y estratégicamente informadas.
+
+\subsubsection*{Control de búsqueda}
+El control de búsqueda del chip implementaba una versión optimizada del algoritmo \textit{alpha-beta} con ventana nula, lo que simplificaba el hardware al eliminar la necesidad de una pila de valores. Este componente también incluía un sistema de repetición basado en un búfer circular de 32 entradas, que rastreaba las posiciones recientes para detectar repeticiones y aplicar reglas de ajedrez relacionadas con ellas.
+
+Aunque la búsqueda en hardware carecía de una tabla de transposición, esta limitación se mitigaba delegando las ramas superiores del árbol de decisiones al software, que sí podía emplear tablas de transposición para mejorar la eficiencia.
+
+\subsubsection*{Extensibilidad}
+El diseño del chip permitía conectarse opcionalmente a una FPGA (\textit{Field Programmable Gate Array}), lo que habría permitido agregar una tabla de transposición externa, nuevos términos de evaluación y control de búsqueda más sofisticado. Sin embargo, esta capacidad no se utilizó debido a limitaciones de tiempo en el desarrollo.
+
 
 \subsection{Software y Algoritmos}
 El software de Deep Blue era igualmente avanzado y estaba diseñado para maximizar el uso del hardware especializado:
 
-\subsubsection*{Algoritmo de búsqueda Alpha-Beta}
-El algoritmo Alpha-Beta es una optimización de la búsqueda minimax que permite reducir drásticamente el número de nodos evaluados. En Deep Blue, se implementó una versión mejorada que priorizaba las ramas más prometedoras, logrando decisiones rápidas y precisas.
+\subsubsection{Algoritmos de Búsqueda en Software}
 
-\subsubsection*{Función de evaluación heurística}
-La función de evaluación de Deep Blue consideraba múltiples factores, incluyendo:
+La búsqueda en software de Deep Blue se desarrolló como una mejora de la utilizada en Deep Thought 1, incorporando un enfoque de búsqueda selectiva denominado créditos duales con extensiones diferidas. Este método sigue varios principios diseñados para maximizar la eficiencia y profundidad del análisis:
+
+\subsubsection*{Extensión de pares de movimientos forzantes y forzados (FFP)}
+En ajedrez, los pares de movimientos forzantes y forzados (FFP) son fundamentales para el análisis táctico. Estos incluyen:
 \begin{itemize}
-    \item \textbf{Control del tablero:} Evaluaba la influencia de las piezas sobre áreas clave.
-    \item \textbf{Ventaja material:} Calculaba el equilibrio de fuerzas en términos de puntos de piezas.
-    \item \textbf{Estrategias tácticas:} Identificaba patrones como sacrificios y jaques.
+    \item Situaciones donde un jugador tiene una amenaza ganadora imparable, mientras el oponente responde con movimientos de retraso.
+    \item Secuencias de sacrificios y amenazas inmediatas que conducen a un jaque mate o a la ganancia de material significativo.
+\end{itemize}
+Deep Blue aplica extensiones fraccionarias para evitar explosiones de búsqueda. Por ejemplo, un FFP puede extenderse en 1.75 niveles en lugar de los 2 niveles completos.
+
+\subsubsection*{Movimientos forzados dependientes de expectativas}
+Los movimientos se consideran forzados en función de si cumplen o no con las expectativas del nivel de evaluación actual. Un movimiento que "falla bajo" (es decir, queda por debajo de las expectativas) no se clasifica como forzado en este sistema, lo que optimiza la búsqueda.
+
+\subsubsection*{Extensiones diferidas}
+Las extensiones solo se aplican después de acumular créditos suficientes en una secuencia de FFP. Esto previene extensiones innecesarias en movimientos aislados y favorece el análisis de patrones tácticos más complejos.
+
+\subsubsection*{Créditos duales}
+En las variaciones principales (PV), ambos jugadores pueden acumular créditos al mismo tiempo, lo que puede causar explosiones de búsqueda. Deep Blue soluciona esto separando los créditos de ambos lados y asegurando que uno ceda créditos equivalentes al otro al extender.
+
+\subsubsection*{Preservación del sobre de búsqueda}
+Para evitar oscilaciones en el análisis, el sistema preserva un "sobre de búsqueda" que asegura que se mantenga un mínimo de crédito generado en posiciones repetidas.
+
+\subsubsection*{Mecanismos de Generación de Créditos}
+Deep Blue identifica nodos para recibir créditos utilizando varios mecanismos:
+\begin{itemize}
+    \item \textbf{Movimientos singulares}: Movimientos claramente mejores que las alternativas, incluyendo variantes binarias o trinitarias.
+    \item \textbf{Amenazas}: Movimientos que representan amenazas, como jaques o ataques directos, detectados mediante búsquedas de movimientos nulos.
+    \item \textbf{Influencia}: Movimientos que habilitan combinaciones futuras, incluso si no son evidentes de inmediato.
+    \item \textbf{Dependencia de dominio}: Factores específicos del juego, como empujes de peones pasados o evasión de jaques, integrados en el sistema de crédito.
 \end{itemize}
 
-\subsubsection*{Base de datos de aperturas y finales}
-La base de datos de Deep Blue incluía millones de posiciones precomputadas, lo que le proporcionaba una ventaja inicial significativa en las partidas y un conocimiento profundo en finales complejos.
+\subsubsection*{Rendimiento de Búsqueda}
+Los experimentos muestran que Deep Blue puede alcanzar una profundidad combinada de búsqueda de hasta 40 niveles en posiciones tácticas. En posiciones más tranquilas, se observa una eficiencia de búsqueda superior, lo que permite un análisis más exhaustivo con menor riesgo de explosión de búsqueda.
 
+\subsubsection{Búsqueda en Hardware}
+
+La búsqueda en hardware de Deep Blue es realizada directamente en los chips de ajedrez especializados, implementando una búsqueda de profundidad fija con ventana nula. Aunque esta búsqueda es extremadamente rápida, es relativamente simple en comparación con la búsqueda en software, y está diseñada para realizar análisis poco profundos, típicamente de 4 o 5 niveles en posiciones de medio juego, y algo más profundos en finales. El balance entre la velocidad de la búsqueda en hardware y la complejidad de la búsqueda en software es un factor clave en el diseño de Deep Blue.
+
+Una vez iniciada una búsqueda en hardware, el procesador anfitrión queda libre para realizar otras tareas, como búsquedas en software o la gestión de otros chips. El anfitrión consulta periódicamente a los chips para verificar la finalización de la búsqueda, y puede interrumpirla si resulta demasiado lenta o irrelevante.
+
+La naturaleza de ventana nula de la búsqueda en hardware requiere un manejo especial para obtener valores exactos en lugar de límites. Esto se logra mediante una búsqueda binaria, que inicia una serie de búsquedas con ventana nula para determinar el valor exacto. En estos casos, múltiples chips pueden operar simultáneamente para acelerar el proceso.
+
+\subsubsection*{Parámetros principales de la búsqueda en hardware}
+Los parámetros que controlan el comportamiento de la búsqueda en hardware son los siguientes:
+\begin{enumerate}
+    \item \textbf{Profundidad de búsqueda:} Controla la profundidad de la porción de búsqueda de ancho completo.
+    \item \textbf{Profundidad de búsquedas de offset:} Detecta condiciones singulares, binarias y ternarias en el nodo raíz del árbol de búsqueda.
+    \item \textbf{Afirmaciones de reglas de finales:} Pueden activarse o desactivarse para depuración, aunque están siempre activas en el código de Deep Blue.
+    \item \textbf{ROM de finales:} Incluyen patrones característicos para mejorar la evaluación de finales comunes, como rey y peón contra rey, torre y peón contra torre, dama contra peón, y torre contra peón.
+    \item \textbf{Número de jaque mates permitidos:} Controla los jaques que dejan al rey sin casillas de escape, limitando el tamaño de la búsqueda de quiescencia.
+    \item \textbf{Número de movimientos de jaque singulares:} Permite movimientos como jaques de contacto (movimientos que dan jaque con piezas como dama o torre) y otros movimientos específicos para controlar la búsqueda.
+    \item \textbf{Pruebas de condiciones singulares, binarias o ternarias:} Implementadas solo en el nodo raíz de la búsqueda en hardware, estas extensiones ayudan a prevenir búsquedas no terminantes al no disponer de una tabla de transposición.
+    \item \textbf{Ignorar tablas:} Permite omitir tablas en posiciones de estancamiento justo antes de la búsqueda de quiescencia.
+    \item \textbf{Extensiones basadas en movimientos de peones:} Una extensión de un nivel puede activarse cuando un peón avanza a la séptima o, en algunos casos, a la sexta fila.
+    \item \textbf{Extensiones para piezas colgadas:} Permite extensiones de un nivel en escenarios donde el lado en turno tiene múltiples piezas colgadas, piezas clavadas y colgadas, o si el oponente tiene piezas colgadas.
+\end{enumerate}
+
+Esta configuración demuestra cómo Deep Blue optimiza la búsqueda en hardware para manejar posiciones de ajedrez de manera rápida y eficiente, mientras colabora con la búsqueda en software para análisis más profundos y contextuales.
+
+\subsubsection{Búsqueda Paralela}
+
+Deep Blue utiliza una arquitectura de búsqueda paralela basada en un sistema compuesto por 30 nodos IBM RS/6000 SP y 480 chips de ajedrez, con 16 chips por nodo. Los nodos SP se comunican entre sí mediante el estándar MPI (Message Passing Interface) a través de un conmutador de alta velocidad, mientras que los chips de ajedrez se comunican con sus nodos anfitriones mediante un bus Micro Channel.
+
+\subsubsection*{Algoritmo de búsqueda paralela}
+El algoritmo de búsqueda paralela de Deep Blue sigue una jerarquía estática de procesadores. Un nodo maestro SP controla los otros 29 nodos, que a su vez gestionan los 16 chips de ajedrez asignados. Esta estructura jerárquica estática es necesaria debido a las limitaciones de los chips, que funcionan exclusivamente como esclavos y solo se comunican con sus nodos anfitriones.
+
+La búsqueda paralela se lleva a cabo bajo diversas condiciones:
+\begin{itemize}
+    \item \textbf{Nodos de tipo 1 (PV):} Después de evaluar el primer movimiento en un nodo PV, los movimientos alternativos pueden evaluarse en paralelo utilizando ventanas desplazadas. Las búsquedas de movimiento nulo también se realizan en paralelo.
+    \item \textbf{Nodos de tipo 2 positivos:} Si el primer movimiento supera las expectativas (``fail high''), se ejecutan búsquedas de profundidad reducida y búsquedas de movimiento nulo en paralelo.
+    \item \textbf{Nodos de tipo 2 negativos:} Si el primer movimiento no es el que ``falla alto'', los movimientos restantes se evalúan en paralelo. Una vez encontrado un movimiento ``fail high'', se realizan búsquedas adicionales en paralelo.
+    \item \textbf{Nodos de tipo 3 (todos los movimientos fallan bajo):} Todos los movimientos en estos nodos pueden evaluarse en paralelo.
+\end{itemize}
+
+\subsubsection*{Implementación de la búsqueda paralela}
+La búsqueda comienza en el nodo maestro, que maneja las primeras iteraciones debido a la baja necesidad de paralelismo inicial. A medida que la búsqueda se profundiza, las tareas se distribuyen entre todos los nodos. Los principales desafíos abordados incluyen:
+\begin{itemize}
+    \item \textbf{Balanceo de carga:} El algoritmo de extensiones de búsqueda genera tamaños de árbol muy variables. Las búsquedas prolongadas en hardware (más de 8000 nodos) se abortan y se transfieren al software para un procesamiento más equilibrado.
+    \item \textbf{Sobrecarga del maestro:} Para evitar cuellos de botella, los nodos trabajadores tienen siempre una tarea en espera, minimizando los retrasos por latencia de comunicación.
+    \item \textbf{Compartición entre nodos:} Los trabajadores no se comunican directamente entre sí, simplificando la implementación. Los resultados costosos, como las tablas de transposición, se transmiten al maestro.
+\end{itemize}
+
+Cabe destacar que la búsqueda paralela en Deep Blue es no determinista, lo que complica el proceso de depuración debido a factores como la asignación de tareas y el tiempo de procesamiento.
+
+\subsubsection*{Rendimiento de la búsqueda paralela}
+Los experimentos realizados en una versión de Deep Blue con un solo nodo y 24 chips mostraron resultados variables según la complejidad táctica de las posiciones. En posiciones tácticas, se observó una aceleración promedio de 7x (30\% de eficiencia), mientras que en posiciones más tranquilas, la aceleración promedio fue de 18x (75\% de eficiencia).
+
+En el sistema completo de 30 nodos, las estimaciones sugieren una eficiencia de alrededor del 8\% en posiciones tácticas y del 12\% en posiciones tranquilas. Aunque existía margen para mejoras, el equipo decidió centrarse en mejorar la función de evaluación entre los encuentros de 1996 y 1997 con Kasparov, dejando el código de búsqueda paralela mayormente intacto.
+
+
+\subsubsection{Función de Evaluación}
+
+La función de evaluación de Deep Blue fue un componente crucial que permitió analizar posiciones de ajedrez con precisión. Se basaba en la suma de valores de características detectadas en el tablero. El hardware de Deep Blue podía reconocer aproximadamente \textbf{8000 patrones distintos}, que abarcaban desde características simples, como una pieza en una casilla específica, hasta patrones complejos que requerían análisis avanzados. Los valores de las características podían ser estáticos o dinámicos. Los valores estáticos se configuraban al inicio de la búsqueda, mientras que los valores dinámicos se ajustaban durante la búsqueda en función del contexto, como la cantidad de material en el tablero. Este enfoque dinámico permitía evaluar factores como la seguridad del rey, los defectos en la estructura de peones y los peones pasados de manera más contextualizada.
+
+El generador de la función de evaluación desempeñaba un papel clave al inicializar y ajustar los valores de las características detectadas. Este generador, que operaba en el nodo maestro, no solo configuraba los valores iniciales en la raíz del árbol de búsqueda, sino que también imponía relaciones entre grupos de características relacionadas, lo que simplificaba la gestión de los parámetros. En total, la función de evaluación de Deep Blue incluía \textbf{54 registros} y \textbf{8096 entradas de tablas}, sumando 8150 parámetros configurables.
+
+\subsubsection*{Análisis automatizado de la función de evaluación}
+Aunque la mayoría de las características y pesos de la función de evaluación fueron configurados manualmente, Deep Blue empleó herramientas automatizadas en dos áreas específicas. La primera identificaba características “ruidosas”, es decir, aquellas cuya contribución al resultado no era significativa. Esto permitió ajustar elementos como la movilidad de las piezas, la seguridad del rey y las torres en columnas, mejorando su relevancia en el hardware de Deep Blue II. La segunda herramienta se centraba en ajustar los pesos de las características mediante un método de entrenamiento comparativo. Este enfoque detectó que los pesos asignados manualmente a factores como el refugio de peones eran demasiado bajos, lo que llevó a incrementarlos antes del match de 1997, con evidencia de que esta mejora contribuyó a un mejor desempeño.
+
+
+\subsection{Preparación de aperturas, finales y control de tiempo}
+
+Deep Blue incorporó estrategias avanzadas para optimizar su desempeño en las diferentes fases del juego de ajedrez: apertura, medio juego y finales. Esto incluyó una meticulosa preparación de aperturas, bases de datos especializadas para finales y un mecanismo eficiente para gestionar el tiempo durante las partidas.
+
+\subsubsection*{Preparación de aperturas}
+El libro de aperturas de Deep Blue fue creado manualmente por el Gran Maestro Joel Benjamin, con la asistencia de otros Grandes Maestros como Nick De Firmian, John Fedorowicz y Miguel Illescas. Este libro contenía aproximadamente \textbf{4000 posiciones}, cuidadosamente seleccionadas y probadas en simulaciones nocturnas con Deep Blue. Las aperturas se eligieron para favorecer posiciones tácticamente complejas que la máquina manejaba con eficiencia, aunque también se incluyeron variantes posicionales que habían mostrado buenos resultados en la práctica.
+
+Antes de cada partida, se seleccionaba un repertorio específico de aperturas, basado en la situación del match y el desempeño previo con las mismas. Además, existía un pequeño libro de \textit{anulación}, donde se podían realizar ajustes de último minuto para corregir errores o adaptar la estrategia.
+
+\subsubsection*{Libro extendido de aperturas}
+Cuando el libro principal no cubría una posición, Deep Blue recurría a un mecanismo llamado \textit{libro extendido}, diseñado para integrar datos de una base de datos de partidas de Grandes Maestros que contenía \textbf{700,000 partidas}. Este sistema asignaba bonificaciones o penalizaciones a los movimientos en función de varios factores:
+\begin{itemize}
+    \item Frecuencia de uso del movimiento en partidas de Grandes Maestros.
+    \item Comparación relativa entre la frecuencia de movimientos alternativos.
+    \item Fuerza de los jugadores que realizaron los movimientos.
+    \item Recencia de los movimientos, favoreciendo jugadas más modernas.
+    \item Resultados obtenidos con el movimiento en partidas previas.
+    \item Comentarios y anotaciones, como movimientos marcados con ``!'' o ``?''.
+\end{itemize}
+Estas bonificaciones podían llegar a ser equivalentes a medio peón, inclinando significativamente las decisiones de Deep Blue hacia movimientos con mayor respaldo teórico. En algunos casos, si un movimiento tenía una bonificación mucho mayor que las alternativas, la máquina lo ejecutaba directamente sin realizar una búsqueda exhaustiva.
+
+\subsubsection*{Bases de datos de finales}
+Deep Blue incluía bases de datos de finales para posiciones con \textbf{cinco o menos piezas}, así como ciertas posiciones específicas de seis piezas, como aquellas con peones bloqueados. Estas bases de datos se almacenaban localmente en cada nodo y, en casos más complejos, se accedía a discos RAID de \textbf{20 GB} a través del switch de alta velocidad.
+
+Las bases de datos asignaban un bit por posición, indicando si una configuración resultaba en derrota o en empate. Si durante la búsqueda se alcanzaba una posición con un valor conocido, se utilizaba directamente, ahorrando tiempo de cálculo y optimizando el proceso de búsqueda.
+
+Aunque estas bases no fueron críticas en el enfrentamiento con Kasparov, jugaron un papel importante en el diseño de los chips y en la verificación de patrones recurrentes en finales comunes.
+
+\subsubsection*{Control de tiempo}
+El mecanismo de control de tiempo de Deep Blue estaba diseñado para manejar las restricciones típicas del ajedrez competitivo, como realizar \textbf{40 movimientos en 2 horas}. Antes de cada búsqueda, el sistema definía dos objetivos temporales:
+\begin{itemize}
+    \item \textbf{Tiempo normal:} Calculado como el tiempo restante dividido entre los movimientos restantes, reservando un margen para emergencias.
+    \item \textbf{Tiempo de pánico:} Aproximadamente un tercio del tiempo restante, utilizado en situaciones críticas.
+\end{itemize}
+Deep Blue podía extender su tiempo de búsqueda más allá del objetivo normal si detectaba situaciones como una caída significativa en el puntaje del mejor movimiento, estados de \textit{fail-low} o \textit{fail-high}, o inconsistencias que requerían resolución inmediata. Sin embargo, llegar al tiempo de pánico era raro; en el match de 1997 contra Kasparov, esto ocurrió solo una vez.
 \newpage
 
 \section{Impacto en la Ciencia de la Computación}
