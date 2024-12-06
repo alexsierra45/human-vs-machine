@@ -161,7 +161,7 @@ La función de evaluación en el chip era responsable de asignar valores numéri
 Este diseño balanceaba velocidad y precisión, asegurando que las decisiones del sistema fueran tácticamente sólidas y estratégicamente informadas.
 
 \subsubsection*{Control de búsqueda}
-El control de búsqueda del chip implementaba una versión optimizada del algoritmo \textit{alpha-beta} con ventana nula, lo que simplificaba el hardware al eliminar la necesidad de una pila de valores. Este componente también incluía un sistema de repetición basado en un búfer circular de 32 entradas, que rastreaba las posiciones recientes para detectar repeticiones y aplicar reglas de ajedrez relacionadas con ellas.
+El control de búsqueda del chip implementaba una versión optimizada del algoritmo \textit{alpha-beta} \cite{knuth1975analysis} con ventana nula, lo que simplificaba el hardware al eliminar la necesidad de una pila de valores. Este componente también incluía un sistema de repetición basado en un búfer circular de 32 entradas, que rastreaba las posiciones recientes para detectar repeticiones y aplicar reglas de ajedrez relacionadas con ellas.
 
 Aunque la búsqueda en hardware carecía de una tabla de transposición, esta limitación se mitigaba delegando las ramas superiores del árbol de decisiones al software, que sí podía emplear tablas de transposición para mejorar la eficiencia.
 
@@ -185,7 +185,7 @@ En ajedrez, los pares de movimientos forzantes y forzados (FFP) son fundamentale
 Deep Blue aplica extensiones fraccionarias para evitar explosiones de búsqueda. Por ejemplo, un FFP puede extenderse en 1.75 niveles en lugar de los 2 niveles completos.
 
 \subsubsection*{Movimientos forzados dependientes de expectativas}
-Los movimientos se consideran forzados en función de si cumplen o no con las expectativas del nivel de evaluación actual. Un movimiento que "falla bajo" (es decir, queda por debajo de las expectativas) no se clasifica como forzado en este sistema, lo que optimiza la búsqueda.
+Los movimientos se consideran forzados en función de si cumplen o no con las expectativas del nivel de evaluación actual. Un movimiento que "fail-low" (es decir, queda por debajo de las expectativas) no se clasifica como forzado en este sistema, lo que optimiza la búsqueda.
 
 \subsubsection*{Extensiones diferidas}
 Las extensiones solo se aplican después de acumular créditos suficientes en una secuencia de FFP. Esto previene extensiones innecesarias en movimientos aislados y favorece el análisis de patrones tácticos más complejos.
@@ -199,7 +199,7 @@ Para evitar oscilaciones en el análisis, el sistema preserva un "sobre de búsq
 \subsubsection*{Mecanismos de Generación de Créditos}
 Deep Blue identifica nodos para recibir créditos utilizando varios mecanismos:
 \begin{itemize}
-    \item \textbf{Movimientos singulares}: Movimientos claramente mejores que las alternativas, incluyendo variantes binarias o trinitarias.
+    \item \textbf{Movimientos singulares}: Movimientos claramente mejores que las alternativas, incluyendo variantes binarias o ternarias.
     \item \textbf{Amenazas}: Movimientos que representan amenazas, como jaques o ataques directos, detectados mediante búsquedas de movimientos nulos.
     \item \textbf{Influencia}: Movimientos que habilitan combinaciones futuras, incluso si no son evidentes de inmediato.
     \item \textbf{Dependencia de dominio}: Factores específicos del juego, como empujes de peones pasados o evasión de jaques, integrados en el sistema de crédito.
@@ -244,7 +244,7 @@ La búsqueda paralela se lleva a cabo bajo diversas condiciones:
 \begin{itemize}
     \item \textbf{Nodos de tipo 1 (PV):} Después de evaluar el primer movimiento en un nodo PV, los movimientos alternativos pueden evaluarse en paralelo utilizando ventanas desplazadas. Las búsquedas de movimiento nulo también se realizan en paralelo.
     \item \textbf{Nodos de tipo 2 positivos:} Si el primer movimiento supera las expectativas (``fail high''), se ejecutan búsquedas de profundidad reducida y búsquedas de movimiento nulo en paralelo.
-    \item \textbf{Nodos de tipo 2 negativos:} Si el primer movimiento no es el que ``falla alto'', los movimientos restantes se evalúan en paralelo. Una vez encontrado un movimiento ``fail high'', se realizan búsquedas adicionales en paralelo.
+    \item \textbf{Nodos de tipo 2 negativos:} Si el primer movimiento no es el que ``fail-high'', los movimientos restantes se evalúan en paralelo. Una vez encontrado un movimiento ``fail high'', se realizan búsquedas adicionales en paralelo.
     \item \textbf{Nodos de tipo 3 (todos los movimientos fallan bajo):} Todos los movimientos en estos nodos pueden evaluarse en paralelo.
 \end{itemize}
 
@@ -289,7 +289,7 @@ Cuando el libro principal no cubría una posición, Deep Blue recurría a un mec
     \item Frecuencia de uso del movimiento en partidas de Grandes Maestros.
     \item Comparación relativa entre la frecuencia de movimientos alternativos.
     \item Fuerza de los jugadores que realizaron los movimientos.
-    \item Recencia de los movimientos, favoreciendo jugadas más modernas.
+    \item Novedad de los movimientos, favoreciendo jugadas más modernas.
     \item Resultados obtenidos con el movimiento en partidas previas.
     \item Comentarios y anotaciones, como movimientos marcados con ``!'' o ``?''.
 \end{itemize}
