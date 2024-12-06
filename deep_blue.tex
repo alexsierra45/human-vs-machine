@@ -10,16 +10,29 @@
 \geometry{margin=1in}
 \usepackage{fancyhdr}
 \pagestyle{fancy}
-\fancyhead[L]{Hombre vs Máquina} 
+\fancyhead[L]{Hombre vs Máquina}
 
-\title{\textbf{Deep Blue: Hombre vs Máquina}}
-\author{Juan Carlos Espinosa Delgado, Alex Sierra Alcalá \\ MATCOM, Universidad de La Habana}
-\date{\today}
+\def\maketitle{%
+  \thispagestyle{empty}%
+  \begin{center}
+    \vskip 3cm
+    {\large Universidad de La Habana} \\ Facultad de Matemática y Computación \\ 
+    \vskip 0.25cm
+    \includegraphics[width=3cm]{uh.png} \\
+    \vskip 2cm
+    {\LARGE \textbf{\textbf{Deep Blue: Hombre vs Máquina}}} \\
+    \vskip 0.25cm
+    {\large Trabajo de Historia de la Computación}
+    \vskip 2cm
+    {\Large Autores:\\ \textbf{Juan Carlos Espinosa Delgado \\ Alex Sierra Alcalá}} \\
+    \vfill
+    \date{Diciembre 2024}
+  \end{center}
+}
 
 \begin{document}
 
 \maketitle
-\newpage
 
 \begin{titlepage}
     \centering
@@ -346,7 +359,7 @@ En resumen, Deep Blue no fue solo una máquina diseñada para jugar ajedrez, sin
 
 \newpage
 
-\bibliographystyle{plain}
+\bibliographystyle{acm}
 \bibliography{references} 
 
 \end{document}
